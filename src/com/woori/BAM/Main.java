@@ -1,16 +1,20 @@
 package com.woori.BAM;
-import jdk.dynalink.beans.StaticClass;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+    static int lastArticleId;  // lastArticleId 선언--> 전역변수
+    static List<Article> articles ;  //articles 선언 --> 전역변수
+
     public static void main(String[] args) {
+
+        System.out.println(2);
         System.out.println("== 프로그램 시작 ==");
         Scanner sc = new Scanner(System.in);
-        int lastArticleID = 1;
-        List<Article> articles = new ArrayList<>();
+        //일반 메서드는 호출 불가
+        makeTestData();   //  makeTestData() --> 메서드가 static 메서드 일수 밖에 없는 이유
 
         while (true) {
             System.out.printf("cmd) ");
@@ -38,12 +42,12 @@ public class Main {
                 String title = sc.nextLine();
                 System.out.print("내용 : ");
                 String body = sc.nextLine();
-                System.out.println(lastArticleID + " 번글이 생성되었습니다");
+                System.out.println(lastArticleId + " 번글이 생성되었습니다");
 
-                Article article = new Article(lastArticleID, title, body, util.getDateStr(),0 ); // viewCnt --> write 실행, 저장 --> viewCnt --> 0 이다
+                Article article = new Article(lastArticleId, title, body, Util.getDateStr(),0 ); // viewCnt --> write 실행, 저장 --> viewCnt --> 0 이다
 
                 articles.add(article);
-                lastArticleID++;
+                lastArticleId++;
             } else if (cmd.startsWith("article detail")) {
                 String[] cmdBits = cmd.split(" ");
                 Article foundArticle = null;
@@ -64,7 +68,7 @@ public class Main {
                         break;  //for문을 빠져나감
                     }
                 }
-                if (foundArticle == null) { //search 수행했으나 게시글이 없음
+                if (foundArticle == null) { //serarch 수행했으나 게시글이 없음
                     System.out.printf("%d번 게시물이 존재하지 않습니다\n", id);
                     continue; //while문을 다시 시작해라
                 }
@@ -98,7 +102,7 @@ public class Main {
                         break;  //for문을 빠져나감
                     }
                 }
-                if (foundArticle == null) { //search 수행했으나 게시글이 없음
+                if (foundArticle == null) { //serarch 수행했으나 게시글이 없음
                     System.out.printf("%d번 게시물이 존재하지 않습니다\n", id);
                     continue; //while문을 다시 시작해라
                 }
@@ -132,11 +136,11 @@ public class Main {
                         break;  //for문을 빠져나감
                     }
                 }
-                if (foundArticle == null) { //search 수행했으나 게시글이 없음
+                if (foundArticle == null) { //serarch 수행했으나 게시글이 없음
                     System.out.printf("%d번 게시물이 존재하지 않습니다\n", id);
                     continue; //while문을 다시 시작해라
                 }
-                // search후 delete
+                // serach후 delete
 //                articles.remove(id-1);        //remove(int index) 1번 방식
                 articles.remove(foundArticle);  //remove(Object e)  2번 방식 --> 권장
 
@@ -147,6 +151,19 @@ public class Main {
             }
         }
         System.out.println("== 프로그램 종료 ==");
+    }
+
+    static void makeTestData() {  // static 메서드안에서는 static 멤버 필드를 사용한다, 일반 멤버 필드는 사용불가
+        System.out.println(3);
+        for(int i = 1; i <= 500 ; i++ ) {
+            articles.add(new Article(lastArticleId++,"제목" + i, "내용" + i, Util.getDateStr(), i * 10)) ;
+        }
+    }
+
+    static {
+        System.out.println(1);
+        articles = new ArrayList<>();
+        lastArticleId = 1 ;
     }
 }
 
