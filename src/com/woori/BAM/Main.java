@@ -1,4 +1,6 @@
 package com.woori.BAM;
+import jdk.dynalink.beans.StaticClass;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -38,7 +40,7 @@ public class Main {
                 String body = sc.nextLine();
                 System.out.println(lastArticleID + " 번글이 생성되었습니다");
 
-                Article article = new Article(lastArticleID, title, body, Util.getDateStr(),0 ); // viewCnt --> write 실행, 저장 --> viewCnt --> 0 이다
+                Article article = new Article(lastArticleID, title, body, util.getDateStr(),0 ); // viewCnt --> write 실행, 저장 --> viewCnt --> 0 이다
 
                 articles.add(article);
                 lastArticleID++;
